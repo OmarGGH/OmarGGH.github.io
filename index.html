@@ -1,16 +1,468 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Data Viz Site</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>San Francisco Crime — What History Tells Us</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --parchment:  #F4EFE6;
+      --navy:       #1C2B3A;
+      --brick:      #B84C3A;
+      --ochre:      #C8A96E;
+      --fog:        #E6EDF5;
+      --sage:       #E8EDE4;
+      --text-dark:  #2A2A2A;
+      --text-mid:   #555;
+      --rule:       rgba(184, 76, 58, 0.22);
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans:  'Source Sans 3', system-ui, sans-serif;
+      --max-w:      960px;
+      --pad-x:      clamp(1.25rem, 5vw, 3rem);
+      --section-pad: clamp(3rem, 8vw, 5.5rem);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--parchment);
+      color: var(--text-dark);
+      font-family: var(--font-sans);
+      font-weight: 300;
+      line-height: 1.7;
+      animation: pageFadeIn 0.9s ease both;
+    }
+
+    /* ─── Page Fade-in ─────────────────────────────────────────── */
+    @keyframes pageFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ─── Scroll-triggered reveal ──────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal.delay-1 { transition-delay: 0.12s; }
+    .reveal.delay-2 { transition-delay: 0.26s; }
+    .reveal.delay-3 { transition-delay: 0.42s; }
+
+    /* ─── Header ───────────────────────────────────────────────── */
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: var(--section-pad) var(--pad-x);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle grid overlay — atlas graph-paper feel */
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg,
+          transparent, transparent 39px,
+          rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px),
+        repeating-linear-gradient(90deg,
+          transparent, transparent 39px,
+          rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px);
+      pointer-events: none;
+    }
+
+    .header-inner {
+      position: relative;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    .header-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      margin-bottom: 1.2rem;
+    }
+
+    header h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.85rem, 5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: #fff;
+      margin-bottom: 1.6rem;
+    }
+
+    .header-rule {
+      width: 48px;
+      height: 2px;
+      background: var(--ochre);
+      margin: 0 auto 1.6rem;
+    }
+
+    header p {
+      font-size: clamp(0.93rem, 2vw, 1.08rem);
+      color: rgba(255,255,255,0.7);
+      max-width: 640px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    /* ─── Sections ─────────────────────────────────────────────── */
+    .section {
+      padding: var(--section-pad) var(--pad-x);
+    }
+
+    .section--parchment { background: var(--parchment); }
+    .section--fog       { background: var(--fog); }
+    .section--sage      { background: var(--sage); }
+
+    .section-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.76rem;
+      color: var(--ochre);
+      letter-spacing: 0.14em;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .section h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.45rem, 3.5vw, 2.1rem);
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 0.55rem;
+    }
+
+    .section-desc {
+      font-size: clamp(0.87rem, 1.8vw, 0.98rem);
+      color: var(--text-mid);
+      margin-bottom: 1.8rem;
+      padding-bottom: 1.1rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* ─── Static image ─────────────────────────────────────────── */
+    .img-wrapper {
+      width: 100%;
+      border: 1px solid rgba(28,43,58,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(28,43,58,0.08);
+    }
+
+    .img-wrapper img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* ─── iFrame wrappers ──────────────────────────────────────── */
+    .iframe-outer {
+      position: relative;
+      width: 100%;
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid rgba(28,43,58,0.1);
+      box-shadow: 0 4px 24px rgba(28,43,58,0.08);
+    }
+
+    /* 16:9 ratio on mobile */
+    .iframe-ratio {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+    }
+
+    /* Fixed height on wider screens */
+    @media (min-width: 640px) {
+      .iframe-ratio {
+        padding-top: 0;
+        height: 520px;
+      }
+    }
+
+    .iframe-ratio iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      transition: filter 0.5s ease;
+    }
+
+    /* ─── Blur / overlay (section 2) ───────────────────────────── */
+    .iframe-blur iframe {
+      filter: blur(4px);
+      pointer-events: none;
+    }
+
+    .iframe-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(230, 237, 245, 0.42);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      cursor: pointer;
+      transition: opacity 0.45s ease;
+      z-index: 10;
+      gap: 0.65rem;
+    }
+
+    .overlay-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 14px rgba(28,43,58,0.28);
+    }
+
+    .overlay-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .iframe-overlay span {
+      font-family: var(--font-sans);
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+
+    .iframe-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ─── Fullscreen link ──────────────────────────────────────── */
+    .fullscreen-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 0.85rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brick);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease, opacity 0.2s ease;
+    }
+
+    .fullscreen-link:hover { border-color: var(--brick); opacity: 0.75; }
+
+    .fullscreen-link svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ─── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.38);
+      text-align: center;
+      padding: 2rem var(--pad-x);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+    }
+
+    footer span { color: var(--ochre); }
+  </style>
 </head>
+
 <body>
-    <h1>Hello World!</h1>
-    <p>This site will soon contain interactive data visualizations about crime in San Francisco.</p>
-    <p>It look like crime has decreased in recent times, or at least that is what the tendency tells us.</p>
-    <img src="images/yearly_crime_trends.png" alt="Yearly crime trends in SF" style="max-width: 100%;">
-    <p>Another thing to see is how certain crimes change their behavior according to the time of the day.</p>
-    <iframe src="visualizations/crime_hourly_interactive.html" width="100%" height="600" frameborder="0"></iframe>
-    <p>In the case of prostitution, its incidence is different according to the SF location.</p>
-    <a href="visualizations/sf_map_pros_movie.html">Explore the prostitution hotspots in SF →</a>
+
+  <!-- ══ HEADER ════════════════════════════════════════════════ -->
+  <header>
+    <div class="header-inner">
+      <p class="header-eyebrow">San Francisco &nbsp;·&nbsp; Data Portfolio</p>
+      <h1>San Francisco Crime<br>What History Tells Us</h1>
+      <div class="header-rule"></div>
+      <p>
+        San Francisco's crime landscape has shifted dramatically over the past two decades,
+        shaped by urban change, policy, and geography.
+        This portfolio explores those patterns through data — uncovering when, where,
+        and what type of crime defines the city.
+      </p>
+    </div>
+  </header>
+
+  <!-- ══ SECTION 1 — Trends Over Time ═════════════════════════ -->
+  <section class="section section--parchment">
+    <div class="section-inner">
+      <span class="section-label reveal">01</span>
+      <h2 class="reveal delay-1">Trends Over Time</h2>
+      <p class="section-desc reveal delay-2">
+        Crime in SF has been falling, but the story is more nuanced than the numbers suggest.
+      </p>
+      <div class="img-wrapper reveal delay-3">
+        <img
+          src="images/yearly_crime_trends.png"
+          alt="Yearly crime trends in San Francisco"
+          loading="eager"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 2 — Crime by the Clock ════════════════════════ -->
+  <section class="section section--fog">
+    <div class="section-inner">
+      <span class="section-label reveal">02</span>
+      <h2 class="reveal delay-1">Crime by the Clock</h2>
+      <p class="section-desc reveal delay-2">
+        Certain offenses follow a rhythm dictated by the hour of day.
+      </p>
+      <div class="reveal delay-3">
+        <div class="iframe-outer">
+          <div class="iframe-ratio iframe-blur" id="chart-wrapper">
+            <iframe
+              id="chart-frame"
+              src="visualizations/crime_hourly_interactive.html"
+              title="Interactive chart: SF crime by hour of day"
+              loading="lazy"
+            ></iframe>
+            <div
+              class="iframe-overlay"
+              id="chart-overlay"
+              role="button"
+              tabindex="0"
+              aria-label="Click to explore the interactive chart"
+            >
+              <div class="overlay-icon">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="4"/>
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                </svg>
+              </div>
+              <span>Click to explore</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 3 — Where It Happens ══════════════════════════ -->
+  <section class="section section--sage">
+    <div class="section-inner">
+      <span class="section-label reveal">03</span>
+      <h2 class="reveal delay-1">Where It Happens</h2>
+      <p class="section-desc reveal delay-2">
+        Prostitution clusters reveal how geography shapes urban crime.
+      </p>
+      <div class="reveal delay-3">
+        <div class="iframe-outer">
+          <div class="iframe-ratio">
+            <iframe
+              src="visualizations/sf_map_pros_movie.html"
+              title="Interactive map: SF prostitution incident locations"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+        <a
+          class="fullscreen-link"
+          href="visualizations/sf_map_pros_movie.html"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open fullscreen
+          <svg viewBox="0 0 24 24">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ════════════════════════════════════════════════ -->
+  <footer>
+    San Francisco Crime Analysis &nbsp;·&nbsp; <span>Data Portfolio</span>
+  </footer>
+
+  <!-- ══ SCRIPTS ════════════════════════════════════════════════ -->
+  <script>
+    // ── Scroll-triggered reveal ──────────────────────────────────
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      }),
+      { threshold: 0.12 }
+    );
+    revealEls.forEach(el => io.observe(el));
+
+    // ── Click-to-activate overlay (Section 2) ───────────────────
+    const overlay = document.getElementById('chart-overlay');
+    const wrapper = document.getElementById('chart-wrapper');
+
+    function activate() {
+      overlay.classList.add('hidden');
+      wrapper.classList.remove('iframe-blur');
+      overlay.removeEventListener('click', activate);
+      overlay.removeEventListener('keydown', onKey);
+    }
+    function onKey(e) {
+      if (e.key === 'Enter' || e.key === ' ') activate();
+    }
+
+    overlay.addEventListener('click', activate);
+    overlay.addEventListener('keydown', onKey);
+  </script>
+
 </body>
 </html>
