@@ -146,11 +146,21 @@
       font-family: var(--font-serif);
       font-style: italic;
       font-size: 1rem;
-      font-weight: 700;
-      color: var(--brick);
+      font-weight: 400;
+      color: var(--ochre);
       letter-spacing: 0.14em;
       margin-bottom: 0.5rem;
       display: block;
+    }
+
+    /* ─── Footnotes ─────────────────────────────────────────────── */
+    .footnote {
+      margin-top: 0.75rem;
+      font-size: 0.78rem;
+      color: var(--text-mid);
+      font-style: italic;
+      line-height: 1.5;
+      opacity: 0.82;
     }
 
     .section h2 {
@@ -351,6 +361,11 @@
           loading="eager"
         />
       </div>
+      <p class="footnote reveal delay-3">
+        Total reported incidents per year across all crime categories in San Francisco (2003–2018).
+        The downward trend after 2008 coincides with broader national patterns, though individual
+        categories tell more varied stories.
+      </p>
     </div>
   </section>
 
@@ -389,6 +404,11 @@
           </div>
         </div>
       </div>
+      <p class="footnote reveal delay-3">
+        Each bar represents the average number of incidents for a given crime type at a specific
+        hour of the day. Use the legend to show or hide individual categories and hover over
+        bars for exact counts.
+      </p>
     </div>
   </section>
 
@@ -423,6 +443,11 @@
             <line x1="10" y1="14" x2="21" y2="3"/>
           </svg>
         </a>
+        <p class="footnote reveal">
+          Each marker on the map represents a reported prostitution incident. The animation
+          plays through years chronologically — use the playback controls to pause or
+          navigate. Zoom and pan freely to explore neighborhood-level patterns.
+        </p>
       </div>
     </div>
   </section>
