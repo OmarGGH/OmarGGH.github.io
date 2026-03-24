@@ -326,6 +326,166 @@
     }
 
     footer span { color: var(--ochre); }
+
+    /* ─── Flip Cards (Section 1 — About the Data) ──────────────── */
+    .flip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .flip-card {
+      perspective: 1000px;
+      cursor: pointer;
+      /* min-height is set on .flip-card-inner so the outer just wraps it */
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      min-height: 300px;
+      transform-style: preserve-3d;
+      transition: transform 0.6s ease;
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 6px;
+      padding: 1.75rem;
+      border: 1px solid rgba(28,43,58,0.1);
+      box-shadow: 0 4px 24px rgba(28,43,58,0.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flip-card-front {
+      background: #fff;
+    }
+
+    .flip-card-back {
+      background: var(--navy);
+      color: rgba(255,255,255,0.88);
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-number {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.78rem;
+      color: var(--ochre);
+      letter-spacing: 0.14em;
+      margin-bottom: 0.65rem;
+    }
+
+    .flip-card-front h3 {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.7rem;
+      line-height: 1.25;
+    }
+
+    .flip-card-back h3 {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ochre);
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+    }
+
+    .flip-card-front p,
+    .flip-card-back p {
+      font-size: 0.875rem;
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .flip-card-front p { color: var(--text-mid); }
+    .flip-card-back p  { color: rgba(255,255,255,0.78); }
+
+    .flip-card-hint {
+      margin-top: 1.1rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .flip-card-front .flip-card-hint { color: var(--brick); }
+    .flip-card-back  .flip-card-hint { color: rgba(200,169,110,0.7); }
+
+    /* ─── Section text blocks (above visualizations) ───────────── */
+    .text-block {
+      margin-bottom: 2rem;
+    }
+
+    .text-block p {
+      font-size: clamp(0.87rem, 1.8vw, 0.98rem);
+      color: var(--text-mid);
+      margin-bottom: 1rem;
+      line-height: 1.75;
+    }
+
+    .text-block p:last-child { margin-bottom: 0; }
+
+    /* ─── Inline citation superscripts ─────────────────────────── */
+    sup a {
+      color: var(--brick);
+      text-decoration: none;
+      font-size: 0.68em;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    sup a:hover { text-decoration: underline; }
+
+    /* ─── References list ───────────────────────────────────────── */
+    .references-list {
+      list-style: none;
+      margin-top: 1.5rem;
+    }
+
+    .references-list li {
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.875rem;
+      color: var(--text-mid);
+      line-height: 1.65;
+      scroll-margin-top: 80px;
+    }
+
+    .references-list li:last-child { border-bottom: none; }
+
+    .references-list .ref-number {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--ochre);
+      margin-right: 0.35rem;
+    }
+
+    .references-list a {
+      color: var(--brick);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease;
+      word-break: break-all;
+    }
+
+    .references-list a:hover { border-color: var(--brick); }
   </style>
 </head>
 
@@ -334,26 +494,209 @@
   <!-- ══ HEADER ════════════════════════════════════════════════ -->
   <header>
     <div class="header-inner">
-      <p class="header-eyebrow">San Francisco &nbsp;·&nbsp; Data Portfolio</p>
-      <h1>San Francisco Crime<br>What History Tells Us</h1>
+      <p class="header-eyebrow">San Francisco &nbsp;·&nbsp; Historical Crime</p>
+      <h1>San Francisco Crime<br>What Data Tells Us</h1>
       <div class="header-rule"></div>
       <p>
-        San Francisco's crime landscape has shifted dramatically over the past two decades,
-        shaped by urban change, policy, and geography.
-        This portfolio explores those patterns through data — uncovering when, where,
+        San Francisco is one of the most famous cities in the United States.
+        Although its population does not even reach a million residents,
+        its dynamics, diversity, tourism, and culture make it a unique
+        urban place to live in. As many cities around the world, the
+        human complexity translates to crime occurrences. Those occurrences
+        has shifted dramatically over the past two decades, passing through
+        urban change, policy shifts, financial crises, and a global pandemic.
+        <br><br>
+        This portfolio explores those patterns through data. It uncovers when, where,
         and what type of crime defines the city.
       </p>
     </div>
   </header>
 
-  <!-- ══ SECTION 1 — Trends Over Time ═════════════════════════ -->
-  <section class="section section--parchment">
+  <!-- ══ SECTION 1 — About the Data ════════════════════════════ -->
+  <section class="section section--fog">
     <div class="section-inner">
       <span class="section-label reveal">01</span>
+      <h2 class="reveal delay-1">About the Data</h2>
+      <p class="section-desc reveal delay-2">
+        In order to explore crime in a place, we first need to understand the data registered.
+        In the case of this project, the data was sourced from the San Francisco Police Department's historical
+        incident reports <sup><a href="#ref-1">[1]</a></sup>, covering the period between 2003 and 2025.
+      </p>
+
+      <div class="flip-grid">
+
+        <!-- Card 1 — What the dataset is -->
+        <div class="flip-card reveal delay-1" role="button" tabindex="0"
+             aria-label="Card: What the dataset is — click to flip">
+          <div class="flip-card-inner">
+
+            <div class="flip-card-front">
+              <span class="flip-card-number">i</span>
+              <h3>The Dataset</h3>
+              <p>
+                Two datasets were used for this project, one that covers the 2003-2018 period,
+                and another one that covers the 2018-2025 period.
+              </p>
+              <span class="flip-card-hint">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                     stroke-linejoin="round">
+                  <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                  <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                </svg>
+                Flip for detail
+              </span>
+            </div>
+
+            <div class="flip-card-back">
+              <span class="flip-card-number"></span>
+              <h3>The Dataset</h3>
+              <p>
+                Raw data was sourced from the city's official open data
+                portal.<sup><a href="#ref-1">[1]</a></sup> It includes distinct
+                crime categories, locations and time of incidents. The dataset was obtained
+                from the Police Department Incident Reports: Historical 2003 to May 2018 <sup><a href="#ref-2">[2]</a></sup>,
+                being complemented with the Reports: 2018 to Present <sup><a href="#ref-3">[3]</a></sup>.
+              </p>
+              <span class="flip-card-hint">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                     stroke-linejoin="round">
+                  <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                  <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                </svg>
+                Click to flip back
+              </span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Card 2 — How data was processed -->
+        <div class="flip-card reveal delay-2" role="button" tabindex="0"
+             aria-label="Card: How data was processed — click to flip">
+          <div class="flip-card-inner">
+
+            <div class="flip-card-front">
+              <span class="flip-card-number">ii</span>
+              <h3>Processing &amp; Analysis</h3>
+              <p>
+                Both datasets were cleaned, deduplicated and combined through
+                some LLM prompting and manual review.
+              </p>
+              <span class="flip-card-hint">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                     stroke-linejoin="round">
+                  <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                  <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                </svg>
+                Flip for detail
+              </span>
+            </div>
+
+            <div class="flip-card-back">
+              <span class="flip-card-number"></span>
+              <h3>Processing &amp; Analysis</h3>
+              <p>
+                Pre-processing steps included removal of records with missing or implausible
+                coordinates, standardization of crime-category labels across years, and
+                extraction of hour-of-day and month fields from raw
+                timestamps. All transformations were performed in Python using
+                pandas.
+              </p>
+              <span class="flip-card-hint">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                     stroke-linejoin="round">
+                  <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                  <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                </svg>
+                Click to flip back
+              </span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Card 3 — Crime categories selected -->
+        <div class="flip-card reveal delay-3" role="button" tabindex="0"
+             aria-label="Card: Crime categories selected — click to flip">
+          <div class="flip-card-inner">
+
+            <div class="flip-card-front">
+              <span class="flip-card-number">iii</span>
+              <h3>Category Selection</h3>
+              <p>
+                The crime categories selected for this analysis were chosen
+                based on their direct impact on peoples lives (violent crimes)
+                as well as an specific focus on contextual relevance based on
+                prostitution and drugs.
+              </p>
+              <span class="flip-card-hint">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                     stroke-linejoin="round">
+                  <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                  <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                </svg>
+                Flip for detail
+              </span>
+            </div>
+
+            <div class="flip-card-back">
+              <span class="flip-card-number"></span>
+              <h3>Category Selection</h3>
+              <p>
+                The selected categories give a general overview of the crime in the city.
+                It was decided to make a geospatial analysis of Prostitution to show how
+                crimes can change over time. Additionally, seven crime categories were selected
+                for an hour-of-day analysis.
+              </p>
+              <span class="flip-card-hint">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                     stroke-linejoin="round">
+                  <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                  <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                </svg>
+                Click to flip back
+              </span>
+            </div>
+
+          </div>
+        </div>
+
+      </div><!-- /.flip-grid -->
+    </div>
+  </section>
+
+  <!-- ══ SECTION 2 — Trends Over Time ══════════════════════════ -->
+  <section class="section section--parchment">
+    <div class="section-inner">
+      <span class="section-label reveal">02</span>
       <h2 class="reveal delay-1">Trends Over Time</h2>
       <p class="section-desc reveal delay-2">
-        Crime in SF has been falling, but the story is more nuanced than the numbers suggest.
+        Crime in SF has been falling, but the story is more complex than it seems.
       </p>
+
+      <!-- Text block above chart -->
+      <div class="text-block reveal delay-2">
+        <p>
+          San Francisco's reported crime figures have a particularly change in recent years.
+          Many crimes had very high numbers in the last years of 2010s, but then, after
+          COVID-19 pandemic, those numbers decreased greatly. This is a pattern which was not
+          only observed in San Francisco, but in many cities around the world <sup><a href="#ref-4">[4]</a></sup>.
+        </p>
+        <p>
+          Back in 2017, the San Francisco government implemented the Law Enforcement Assisted Division (LEAD) program,
+          which focuses on a "harm reduction policing, on those who use drugs and/or engage in sex work" <sup><a href="#ref-5">[5]</a></sup>.
+          The goal of that policy was to reduce the arrest of individuals and instead guide them to reduce the offenses. As can be seen in
+          the <i>Figure 1</i>, although a noble idea, it does not always work. Prostitution levels decreased, but the drug offense
+          crimes increased by a great amount in recent years.
+        </p>
+      </div>
+
       <div class="img-wrapper reveal delay-3">
         <img
           src="images/yearly_crime_trends.png"
@@ -362,52 +705,9 @@
         />
       </div>
       <p class="footnote reveal delay-3">
-        Total reported incidents per year across all crime categories in San Francisco (2003–2018).
-        The downward trend after 2008 coincides with broader national patterns, though individual
-        categories tell more varied stories.
-      </p>
-    </div>
-  </section>
-
-  <!-- ══ SECTION 2 — Crime by the Clock ════════════════════════ -->
-  <section class="section section--fog">
-    <div class="section-inner">
-      <span class="section-label reveal">02</span>
-      <h2 class="reveal delay-1">Crime by the Clock</h2>
-      <p class="section-desc reveal delay-2">
-        Certain offenses follow a rhythm dictated by the hour of day.
-      </p>
-      <div class="reveal delay-3">
-        <div class="iframe-outer">
-          <div class="iframe-ratio iframe-blur" id="chart-wrapper">
-            <iframe
-              id="chart-frame"
-              src="visualizations/crime_hourly_interactive.html"
-              title="Interactive chart: SF crime by hour of day"
-              loading="lazy"
-            ></iframe>
-            <div
-              class="iframe-overlay"
-              id="chart-overlay"
-              role="button"
-              tabindex="0"
-              aria-label="Click to explore the interactive chart"
-            >
-              <div class="overlay-icon">
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="4"/>
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                </svg>
-              </div>
-              <span>Click to explore</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <p class="footnote reveal delay-3">
-        Each bar represents the average number of incidents for a given crime type at a specific
-        hour of the day. Use the legend to show or hide individual categories and hover over
-        bars for exact counts.
+        Figure 1. Total reported incidents per year across all crime categories in San Francisco (2018–2025).
+        The downward trend after 2019 coincides with the COVID-19 pandemic impact on social behavior.
+        Data colour is normalized per row in order to simplify the visual comparision within the same category across years.
       </p>
     </div>
   </section>
@@ -418,8 +718,29 @@
       <span class="section-label reveal">03</span>
       <h2 class="reveal delay-1">Where It Happens</h2>
       <p class="section-desc reveal delay-2">
-        Prostitution clusters reveal how geography shapes urban crime.
+        Prostitution clusters can tell the spatial distribution of crime.
       </p>
+
+      <!-- Text block above map -->
+      <div class="text-block reveal delay-2">
+        <p>
+          Crime does not distribute uniformly across a city. There are zones which
+          are more prone to crime than others due to their land use, socioeconomic status,
+          accesability to public facilities, etc. When talking about it, it is easy to
+          fall in biases and stereotypes, but data can help to understand how crime is
+          distributed in space.
+        </p>
+        <p>
+          In this particular case, prostitution was selected in order to show how
+          crime can change through time in a geographical setting. In the case of this type
+          of crime, a generalized reduction can be seen. The heatmap on <i>Figure 2</i> shows
+          how in the earlier years of the 2010s, this crime was very present in the
+          eastern part of the city. In recent years, that tendency has decreased,
+          being explained by the social policies implemented by the city government <sup><a href="#ref-5">[5]</a></sup> <sup><a href="#ref-6">[6]</a></sup>,
+          as well as the impact of the COVID-19 pandemic.
+        </p>
+      </div>
+
       <div class="reveal delay-3">
         <div class="iframe-outer">
           <div class="iframe-ratio">
@@ -444,17 +765,137 @@
           </svg>
         </a>
         <p class="footnote reveal">
-          Each marker on the map represents a reported prostitution incident. The animation
-          plays through years chronologically — use the playback controls to pause or
+          Figure 2. Each marker on the map represents a cluster of reported prostitution incidents. The animation
+          plays through years chronologically. Use the playback controls to pause or
           navigate. Zoom and pan freely to explore neighborhood-level patterns.
         </p>
       </div>
     </div>
   </section>
 
+  <!-- ══ SECTION 4 — Crime by the Clock ════════════════════════ -->
+  <section class="section section--fog">
+    <div class="section-inner">
+      <span class="section-label reveal">04</span>
+      <h2 class="reveal delay-1">Crime by the Clock</h2>
+      <p class="section-desc reveal delay-2">
+        Crimes also have their own schedules.
+      </p>
+
+      <!-- Text block above visualization -->
+      <div class="text-block reveal delay-2">
+        <p>
+          The distribution of criminal activity across the hours of the day varies a lot.
+          As well as other human activities, crimes are shaped by human routines and it is not
+          always true the general idea of having more crimes at night.
+        </p>
+        <p>
+          The treemap and sunburst visualization of <i>Figure 3</i> allows exploration of both category
+          proportions and time-of-day events. Most of the crimes have their peak occurences at afternoon and evening hours,
+          while at the same time, the earlier hours of the day (0:00 - 6:00) are the ones with less crime (criminals also sleep, or is it because of the police?).
+          One interesting insight is the Drug Offense category, which can be seen that it is primarily done in the afternoon hours, meaning that
+          the crime could be seen as a recreational activity, and it could be that it is not so related to being discrete as other crimes
+          that occur at night.
+        </p>
+      </div>
+
+      <div class="reveal delay-3">
+        <div class="iframe-outer">
+          <div class="iframe-ratio">
+            <iframe
+              src="visualizations/crime_Treemap_Sunburst.html"
+              title="Interactive treemap and sunburst: SF crime by hour of day"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+      <p class="footnote reveal delay-3">
+        Figure 3. Treemap and Sunburst visualizations showing the distribution of crime categories
+        Each segment represents the proportion of incidents for a given crime type and time
+        bracket. Switch between treemap and sunburst views to explore category hierarchies
+        and hourly distributions.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 5 — References ═════════════════════════════════ -->
+  <section class="section section--parchment">
+    <div class="section-inner">
+      <span class="section-label reveal">05</span>
+      <h2 class="reveal delay-1">References</h2>
+      <p class="section-desc reveal delay-2">
+        Sources cited throughout this portfolio.
+      </p>
+
+      <ol class="references-list reveal delay-2">
+
+        <li id="ref-1">
+          <span class="ref-number">[1]</span>
+          <strong>DataSF — San Francisco Open Data Portal.</strong>
+          San Francisco Department of Technology.<br>
+          <a href="https://data.sfgov.org" target="_blank" rel="noopener noreferrer">
+            https://data.sfgov.org
+          </a>
+        </li>
+
+        <li id="ref-2">
+          <span class="ref-number">[2]</span>
+          <strong>SFPD Incident Reports: Historical 2003 to May 2018.</strong>
+          San Francisco Police Department, via DataSF.<br>
+          <a href="https://data.sfgov.org/Public-Safety/Police-Department-Incident-Reports-Historical-2003/tmnf-yvry"
+             target="_blank" rel="noopener noreferrer">
+            https://data.sfgov.org/Public-Safety/Police-Department-Incident-Reports-Historical-2003/tmnf-yvry
+          </a>
+        </li>
+
+        <li id="ref-3">
+          <span class="ref-number">[3]</span>
+          <strong>Police Department Incident Reports: 2018 to Present.</strong>
+          San Francisco Police Department, via DataSF.<br>
+          <a href="https://data.sfgov.org/Public-Safety/Police-Department-Incident-Reports-2018-to-Present/wg3w-h783/data_preview"
+             target="_blank" rel="noopener noreferrer">
+            https://data.sfgov.org/Public-Safety/Police-Department-Incident-Reports-2018-to-Present/wg3w-h783/data_preview
+          </a>
+        </li>
+
+        <li id="ref-4">
+          <span class="ref-number">[4]</span>
+          <strong>COVID-19 and Urban Crime: A Global Perspective.</strong>
+          University of Cambridge.<br>
+          <a href="https://www.cam.ac.uk/stories/COVIDcrime#:~:text=COVID%2D19%20shutdowns-,Urban%20crime%20fell%20by%20over%20a%20third%20around%20the%20world,on%20average%20in%20major%20cities."
+          target="_blank" rel="noopener noreferrer">
+            https://www.cam.ac.uk/stories/COVIDcrime#:~:text=COVID%2D19%20shutdowns-,Urban%20crime%20fell%20by%20over%20a%20third%20around%20the%20world,on%20average%20in%20major%20cities.
+          </a>
+        </li>
+
+        <li id="ref-5">
+          <span class="ref-number">[5]</span>
+          <strong>Harm Reduction Policing: An Evaluation of Law Enforcement Assisted Diversion (LEAD) in San Francisco. 
+          </strong> Police Quarterly.<br>
+          <a href="https://journals.sagepub.com/doi/full/10.1177/10986111211037585"
+             target="_blank" rel="noopener noreferrer">
+            https://journals.sagepub.com/doi/full/10.1177/10986111211037585
+          </a>
+        </li>
+
+        <li id="ref-6">
+          <span class="ref-number">[6]</span>
+          <strong> The ‘Prioritizing Safety for Sex Workers Policy’: A sex worker rights and anti-trafficking initiative. 
+          </strong> Anti-Trafficking Review.<br>
+          <a href="https://www.antitraffickingreview.org/index.php/atrjournal/article/view/382"
+             target="_blank" rel="noopener noreferrer">
+            https://www.antitraffickingreview.org/index.php/atrjournal/article/view/382
+          </a>
+        </li>
+
+      </ol>
+    </div>
+  </section>
+
   <!-- ══ FOOTER ════════════════════════════════════════════════ -->
   <footer>
-    San Francisco Crime Analysis &nbsp;·&nbsp; <span>Data Portfolio</span>
+    San Francisco Crime Analysis &nbsp;·&nbsp; <span>Historical Crime</span>
   </footer>
 
   <!-- ══ SCRIPTS ════════════════════════════════════════════════ -->
@@ -469,22 +910,14 @@
     );
     revealEls.forEach(el => io.observe(el));
 
-    // ── Click-to-activate overlay (Section 2) ───────────────────
-    const overlay = document.getElementById('chart-overlay');
-    const wrapper = document.getElementById('chart-wrapper');
-
-    function activate() {
-      overlay.classList.add('hidden');
-      wrapper.classList.remove('iframe-blur');
-      overlay.removeEventListener('click', activate);
-      overlay.removeEventListener('keydown', onKey);
-    }
-    function onKey(e) {
-      if (e.key === 'Enter' || e.key === ' ') activate();
-    }
-
-    overlay.addEventListener('click', activate);
-    overlay.addEventListener('keydown', onKey);
+    // ── Flip card toggle ─────────────────────────────────────────
+    document.querySelectorAll('.flip-card').forEach(card => {
+      function toggle() { card.classList.toggle('flipped'); }
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
   </script>
 
 </body>
